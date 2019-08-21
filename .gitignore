@@ -3,3 +3,7 @@
 
 # Python
 *.pyc
+
+# notebook likely things
+.ipynb_checkpoints
+*.fits*
