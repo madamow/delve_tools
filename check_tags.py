@@ -8,7 +8,7 @@ cur = dbh.cursor()
 
 def remove_duplicates(dfd):
     astro = out[cls]
-    dupl = out[astro.duplicated(keep='last') == True]
+    dupl = out[astro.duplicated(keep='last')]
 
     if dupl.shape[0] != 0:
         pfws = ",".join([str(e) for e in dupl['PFW_ATTEMPT_ID'].to_list()])
@@ -19,7 +19,7 @@ def remove_duplicates(dfd):
         cur.execute(query)
         dbh.commit()
 
-    nodup = out[astro.duplicated(keep='last') == False]
+    nodup = out[astro.duplicated(keep='last') is False]
     nodup = nodup.reset_index(drop=True)
     return nodup
 
