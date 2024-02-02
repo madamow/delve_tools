@@ -17,12 +17,13 @@ def query_database(inargs):
         in_db = pd.DataFrame()
         i = 0
         while query_db:
-            el1 = (",".join(elist.EXPNUM[i*1000:(i+1)*1000]))
-            q1 = f"select expnum,band from exposure where expnum in ({el1})"
-            try:
+            el1 = elist.EXPNUM[i*1000:(i+1)*1000]
+            estr = ",".join(el1)
+            q1 = f"select expnum,band from exposure where expnum in ({estr})"
+            if len(el1) > 0:
                 out = pd.DataFrame(con.query_results(q1),
                                    columns=['EXPNUM', 'BAND'])
-            except:
+            else:
                 pass
             in_db = in_db.append(out)
             i += 1
@@ -69,7 +70,7 @@ def query_database(inargs):
             elist.loc[elist['unitname'] == name, 'status'] = 'in queue'
         else:
             elist.loc[elist['unitname'] == name, 'status'] = 'failed'
-            slist = ",".join([str(int) for int in dfchunk.status.values])
+            slist = " ".join([str(int) for int in dfchunk.status.values])
             elist.loc[elist['unitname'] == name, 'exit_code'] = slist
         idlist = " ".join([str(int) for int in dfchunk.id.values])
         elist.loc[elist['unitname'] == name, 'id'] = idlist
